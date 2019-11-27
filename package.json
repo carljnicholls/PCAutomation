@@ -1,0 +1,28 @@
+{
+    "name": "win10automation",
+    "version": "0.0.1",
+    "description": "Listens to pushbullet maessages and runs autonation tasks",
+    "main": "index.js",
+    "scripts": {
+        "run-param-lock": "tsc -b && node .\\build\\src\\main.js lock",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/carljnicholls/Win10Automation.git"
+    },
+    "author": "Carl J Nicholls",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/carljnicholls/Win10Automation/issues"
+    },
+    "homepage": "https://github.com/carljnicholls/Win10Automation#readme",
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "pushbullet": "^2.4.0"
+    },
+    "devDependencies": {
+        "@types/dotenv": "^8.2.0",
+        "@types/node": "^12.12.14"
+    }
+}
