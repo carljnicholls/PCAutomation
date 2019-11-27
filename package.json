@@ -19,10 +19,13 @@
     "homepage": "https://github.com/carljnicholls/Win10Automation#readme",
     "dependencies": {
         "dotenv": "^8.2.0",
+        "lock-system": "^2.0.0",
         "pushbullet": "^2.4.0"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
-        "@types/node": "^12.12.14"
+        "@types/lock-system": "^2.0.0",
+        "@types/node": "^12.12.14",
+        "tslib": "^1.10.0"
     }
 }

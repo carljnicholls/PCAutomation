@@ -1,3 +1,5 @@
+import lockSystem from 'lock-system';
+
 import { ICommandRunner } from "../../interfaces/i-command-runner";
 import { CommandResultDto } from '../../data-transfer-objects/command-result.dto';
 
@@ -12,6 +14,8 @@ export class LockCommandRunner implements ICommandRunner {
      */
     public async Run(): Promise<CommandResultDto> {
         console.log("LockCommandRunner.Run()");
+
+        lockSystem();
         
         return new CommandResultDto();
         // return new CommandResultDto(false, true, [ "warn" ]);
