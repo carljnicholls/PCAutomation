@@ -3,7 +3,7 @@ import { ICommandRunnerFactory } from "./interfaces/i-command-runner-factory";
 import { CommandResultDto } from './data-transfer-objects/command-result.dto';
 
 /**
- * Asyncronous Starting Point for Application
+ * Asynchronous Starting Point for Application
  */
 export class App {
 
@@ -41,7 +41,7 @@ export class App {
      * @throws When `CommandResult` is not successful, unsuccesful or hasWarnings 
      */
     private handleResult(commandResult: CommandResultDto, args: string[]): void {
-        if(!commandResult.isError && !commandResult.isWarning()) {
+        if(!commandResult.isError && !commandResult.isWarning) {
             console.log('Successfully executed command: ', args)
             return;
         }
@@ -53,7 +53,7 @@ export class App {
             throw new Error("Command not successful");
         }
 
-        if(commandResult.isWarning()) {
+        if(commandResult.isWarning) {
             commandResult.messages.forEach(message => {
                 console.warn(message);
             });

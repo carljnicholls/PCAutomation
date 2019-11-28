@@ -16,9 +16,10 @@ export class LockCommandRunner implements ICommandRunner {
         console.log("LockCommandRunner.Run()");
 
         lockSystem();
-        
+
         return new CommandResultDto();
         // return new CommandResultDto(false, true, [ "warn" ]);
+        // return new CommandResultDto(false, true);
         // return new CommandResultDto(true, false, [ "err" ]);
     }
 }

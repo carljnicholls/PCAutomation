@@ -20,4 +20,4 @@ This Console Application takes string params to automate tasks. The first comman
 
 ## Accepted params
 
-1. lock - locks the user space on win, linux and mac using lock-system. [GitHub](https://github.com/sindresorhus/lock-system), [NPM](https://www.npmjs.com/package/lock-system)
+1. `lock` - locks the user space on win, linux and mac using lock-system. [GitHub](https://github.com/sindresorhus/lock-system), [NPM](https://www.npmjs.com/package/lock-system)

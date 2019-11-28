@@ -5,14 +5,8 @@
  * constructed with success and warning as false a default message is added.
  */
 export class CommandResultDto {
-    private _isWarning: boolean;
     public readonly isError: boolean;
-    public isWarning = () => { 
-        return !this.isError 
-            || !this.isWarning
-            || (this.messages !== undefined 
-                && this.messages.length > 0); 
-    } 
+    public readonly isWarning: boolean;
     public readonly messages: string[] = [];
 
     constructor(
@@ -21,14 +15,16 @@ export class CommandResultDto {
         messages: string[] = []   
     ) {
         this.isError = isError;
-        this._isWarning = isWarning;
-
-        // if(!isError && !isWarning && messages.length === 0) {
-        //     // this.messages = ["Warning: No Message"];
-        // } else{
-        //     this.messages = messages;
-        // }
+        this.isWarning = isWarning;
         this.messages = messages;
 
+        if(isWarning && messages.length === 0) {
+            this.isWarning = true;
+            this.messages = ['Undefined Warning'];
+        }
+
+        if(!isError && !isWarning && messages.length > 0) {
+            this.isWarning = true;
+        }
     }
 }
