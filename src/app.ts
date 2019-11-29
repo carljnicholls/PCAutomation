@@ -1,5 +1,5 @@
 import { DotenvConfigOutput } from 'dotenv/types';
-import { ICommandRunnerFactory } from "./interfaces/i-command-runner-factory";
+import { ICommandRunnerFactory } from "./interfaces/commands/i-command-runner-factory";
 import { CommandResult } from './data-transfer/dtos/command-result.dto';
 
 /**

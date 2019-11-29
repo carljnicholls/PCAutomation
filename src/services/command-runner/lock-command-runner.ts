@@ -1,6 +1,6 @@
 import lockSystem from 'lock-system';
 
-import { ICommandRunner } from "../../interfaces/i-command-runner";
+import { ICommandRunner } from "../../interfaces/commands/i-command-runner";
 import { CommandResult } from '../../data-transfer/dtos/command-result.dto';
 
 /**

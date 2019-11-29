@@ -1,4 +1,4 @@
-import { CommandResult } from '../data-transfer/dtos/command-result.dto';
+import { CommandResult } from '../../data-transfer/dtos/command-result.dto';
 
 /**
  * Provides methods to perform a specific task on the host

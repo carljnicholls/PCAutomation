@@ -1,5 +1,5 @@
-import { ICommandRunnerFactory } from "../../interfaces/i-command-runner-factory";
-import { ICommandRunner } from "../../interfaces/i-command-runner";
+import { ICommandRunnerFactory } from "../../interfaces/commands/i-command-runner-factory";
+import { ICommandRunner } from "../../interfaces/commands/i-command-runner";
 import { LockCommandRunner } from "./lock-command-runner";
 import { CommandParameterEnum } from '../../data-transfer/enums/command-parameter.enum';
 
