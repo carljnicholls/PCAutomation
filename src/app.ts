@@ -1,6 +1,6 @@
 import { DotenvConfigOutput } from 'dotenv/types';
 import { ICommandRunnerFactory } from "./interfaces/i-command-runner-factory";
-import { CommandResultDto } from './data-transfer-objects/command-result.dto';
+import { CommandResult } from './data-transfer/dtos/command-result.dto';
 
 /**
  * Asynchronous Starting Point for Application
@@ -24,14 +24,21 @@ export class App {
      * First is command, anything after is omitted or used as additional params 
      */
     public async Run(args: string[]): Promise<void> { 
-        console.log('App.Run() - start', args);
-        const commandRunner = this.commandRunnerFactory.Get(args[0]); 
-        const commandResult = await commandRunner.Run();
+        try{
+            console.log('App.Run() - start', args);
+            const commandRunner = this.commandRunnerFactory.Get(args[0]); 
+            const commandResult = await commandRunner.Run();
+            
+            // this.config.parsed    
+            this.handleResult(commandResult, args);
         
-        // this.config.parsed    
-        this.handleResult(commandResult, args);
-
-        console.log('App.Run() - finish', args);
+        } catch(error) {
+            console.error('Application Error Catch: ');
+            console.error(error);
+            // Do not rethrow due to Promise
+        } finally {
+            console.log('App.Run() - finish', args);
+        }
     }
 
     /**
@@ -40,7 +47,7 @@ export class App {
      * @param args Arguments passed to the application
      * @throws When `CommandResult` is not successful, unsuccesful or hasWarnings 
      */
-    private handleResult(commandResult: CommandResultDto, args: string[]): void {
+    private handleResult(commandResult: CommandResult, args: string[]): void {
         if(!commandResult.isError && !commandResult.isWarning) {
             console.log('Successfully executed command: ', args)
             return;

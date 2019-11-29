@@ -4,7 +4,7 @@
  * messages but warning false it will set warnings true. If it is 
  * constructed with success and warning as false a default message is added.
  */
-export class CommandResultDto {
+export class CommandResult {
     public readonly isError: boolean;
     public readonly isWarning: boolean;
     public readonly messages: string[] = [];
@@ -12,11 +12,16 @@ export class CommandResultDto {
     constructor(
         isError: boolean = false,
         isWarning: boolean = false,
-        messages: string[] = []   
+        messages: string | string[] = []   
     ) {
         this.isError = isError;
         this.isWarning = isWarning;
-        this.messages = messages;
+
+        if(typeof messages === 'string') {
+            this.messages = [ messages ];
+        } else {
+            this.messages = messages;
+        }
 
         if(isWarning && messages.length === 0) {
             this.isWarning = true;

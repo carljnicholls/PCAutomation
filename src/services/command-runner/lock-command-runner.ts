@@ -1,7 +1,7 @@
 import lockSystem from 'lock-system';
 
 import { ICommandRunner } from "../../interfaces/i-command-runner";
-import { CommandResultDto } from '../../data-transfer-objects/command-result.dto';
+import { CommandResult } from '../../data-transfer/dtos/command-result.dto';
 
 /**
  * This implementation of `ICommandRunner` should lock the current user account
@@ -10,16 +10,21 @@ import { CommandResultDto } from '../../data-transfer-objects/command-result.dto
 export class LockCommandRunner implements ICommandRunner {
     
     /**
-     * Locks the current Windows session
+     * Locks the current Windows, Mac or Linux user session
      */
-    public async Run(): Promise<CommandResultDto> {
+    public async Run(): Promise<CommandResult> {
         console.log("LockCommandRunner.Run()");
 
-        lockSystem();
+        try {
+            lockSystem();    
 
-        return new CommandResultDto();
-        // return new CommandResultDto(false, true, [ "warn" ]);
-        // return new CommandResultDto(false, true);
-        // return new CommandResultDto(true, false, [ "err" ]);
+            return new CommandResult();
+            // return new CommandResultDto(false, true, [ "warn" ]);
+            // return new CommandResultDto(false, true);
+            // return new CommandResultDto(true, false, [ "err" ]);
+        } catch (error) {
+            var ex = JSON.stringify(error);
+            return new CommandResult(true, false, [ex])
+        }
     }
 }
