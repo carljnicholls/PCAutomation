@@ -20,12 +20,16 @@
     "dependencies": {
         "dotenv": "^8.2.0",
         "lock-system": "^2.0.0",
-        "pushbullet": "^2.4.0"
+        "moment": "^2.24.0",
+        "pushbullet": "^2.4.0",
+        "tslib": "^1.10.0",
+        "winston": "^3.2.1"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
         "@types/lock-system": "^2.0.0",
+        "@types/moment": "^2.13.0",
         "@types/node": "^12.12.14",
-        "tslib": "^1.10.0"
+        "@types/winston": "^2.4.4"
     }
 }

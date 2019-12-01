@@ -1,6 +1,7 @@
 import { DotenvConfigOutput } from 'dotenv/types';
 import { ICommandRunnerFactory } from "./interfaces/commands/i-command-runner-factory";
 import { CommandResult } from './data-transfer/dtos/command-result.dto';
+import { ILoggerService } from './interfaces/core/i-logger-service';
 
 /**
  * Asynchronous Starting Point for Application
@@ -9,7 +10,8 @@ export class App {
 
     constructor(
         private readonly commandRunnerFactory: ICommandRunnerFactory,
-        private readonly config: DotenvConfigOutput | undefined
+        private readonly config: DotenvConfigOutput | undefined,
+        private readonly logger: ILoggerService
     ) {
         if(config === undefined) throw 'Env variables are undefined';
         if(config.error) throw config.error;
@@ -25,7 +27,7 @@ export class App {
      */
     public async Run(args: string[]): Promise<void> { 
         try{
-            console.log('App.Run() - start', args);
+            this.logger.debug('App.Run() - start', {beans: args});
             const commandRunner = this.commandRunnerFactory.Get(args[0]); 
             const commandResult = await commandRunner.Run();
             
@@ -33,11 +35,10 @@ export class App {
             this.handleResult(commandResult, args);
         
         } catch(error) {
-            console.error('Application Error Catch: ');
-            console.error(error);
+            this.logger.error('Application Error Catch: ', error);
             // Do not rethrow due to Promise
         } finally {
-            console.log('App.Run() - finish', args);
+            this.logger.debug('App.Run() - finish', args);
         }
     }
 
@@ -49,25 +50,25 @@ export class App {
      */
     private handleResult(commandResult: CommandResult, args: string[]): void {
         if(!commandResult.isError && !commandResult.isWarning) {
-            console.log('Successfully executed command: ', args)
+            this.logger.debug('Successfully executed command: ', args)
             return;
         }
 
         if(commandResult.isError) {
             commandResult.messages.forEach(message => {
-                console.error(message);
+                this.logger.error(message);
             });
             throw new Error("Command not successful");
         }
 
         if(commandResult.isWarning) {
             commandResult.messages.forEach(message => {
-                console.warn(message);
+                this.logger.warn(message);
             });
             return; 
         }
 
-        console.log('Command Result is neither successful, error or warn');
+        this.logger.error('Command Result is neither successful, error or warn');
         throw new Error('Command Result is neither successful, error or warn');
     }
 }
