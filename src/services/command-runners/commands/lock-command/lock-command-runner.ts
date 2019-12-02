@@ -1,8 +1,8 @@
 import lockSystem from 'lock-system';
 
-import { ICommandRunner } from "../../interfaces/commands/i-command-runner";
-import { CommandResult } from '../../data-transfer/dtos/command-result.dto';
-import { ILoggerService } from '../../interfaces/core/i-logger-service';
+import { ICommandRunner } from "../../../../interfaces/command-runners/commands/i-command-runner";
+import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto';
+import { ILoggerService } from '../../../../interfaces/core/i-logger-service';
 
 /**
  * This implementation of `ICommandRunner` should lock the current user account

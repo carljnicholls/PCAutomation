@@ -1,5 +1,5 @@
 import { DotenvConfigOutput } from 'dotenv/types';
-import { ICommandRunnerFactory } from "./interfaces/commands/i-command-runner-factory";
+import { ICommandRunnerFactory } from "./interfaces/command-runners/i-command-runner-factory";
 import { CommandResult } from './data-transfer/dtos/command-result.dto';
 import { ILoggerService } from './interfaces/core/i-logger-service';
 
@@ -27,9 +27,9 @@ export class App {
      */
     public async Run(args: string[]): Promise<void> { 
         try{
-            this.logger.debug('App.Run() - start', {beans: args});
+            this.logger.debug('App.Run() - start', args);
             const commandRunner = this.commandRunnerFactory.Get(args[0]); 
-            const commandResult = await commandRunner.Run();
+            const commandResult = await commandRunner.Run(args.slice(1, args.length));
             
             // this.config.parsed    
             this.handleResult(commandResult, args);

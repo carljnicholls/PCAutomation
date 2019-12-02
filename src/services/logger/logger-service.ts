@@ -47,13 +47,12 @@ export class LoggerService implements ILoggerService {
      */
     public debug(message: string, obj?: unknown | unknown[]): void {
         if(typeof obj !== "undefined") {
-            this.logger.error(message, obj);
+            this.logger.debug(message, obj);
             return;
         }
         
         this.logger.debug(message);
     }
-
 
     /**
      * Serializes message to file and console
@@ -108,6 +107,10 @@ export class LoggerService implements ILoggerService {
         };
     }
 
+    /**
+     * Returns a JSON array string of any object keys that do not match `message`, `level` or `timestamp`.
+     * @param info 
+     */
     private getMetaJsonString(info: TransformableInfo): string {
         let args = Array<unknown>();
 

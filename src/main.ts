@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { CommandRunnerFactory } from "./services/command-runner/command-runner-factory";
+import { CommandRunnerFactory } from "./services/command-runners/command-runner-factory";
 import { LoggerService } from "./services/logger/logger-service";
 
 import { App } from "./app";

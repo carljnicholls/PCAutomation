@@ -23,6 +23,7 @@
         "moment": "^2.24.0",
         "pushbullet": "^2.4.0",
         "tslib": "^1.10.0",
+        "vol": "^3.0.0",
         "winston": "^3.2.1"
     },
     "devDependencies": {

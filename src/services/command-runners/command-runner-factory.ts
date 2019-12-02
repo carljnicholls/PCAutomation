@@ -1,8 +1,9 @@
-import { ICommandRunnerFactory } from "../../interfaces/commands/i-command-runner-factory";
-import { ICommandRunner } from "../../interfaces/commands/i-command-runner";
-import { LockCommandRunner } from "./lock-command-runner";
+import { ICommandRunnerFactory } from "../../interfaces/command-runners/i-command-runner-factory";
+import { ICommandRunner } from "../../interfaces/command-runners/commands/i-command-runner";
+import { LockCommandRunner } from "./commands/lock-command/lock-command-runner";
 import { CommandParameterEnum } from '../../data-transfer/enums/command-parameter.enum';
 import { ILoggerService } from '../../interfaces/core/i-logger-service';
+import { SetVolumeCommandRunner } from './commands/set-volume/set-volume-command-runner';
 
 /**
  * A factory that provides a `ICommandRunner` implementations
@@ -23,7 +24,8 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         const command = commandType.toLowerCase();
 
         if(command === CommandParameterEnum.lock) { return new LockCommandRunner(this.logger); }
-        if(command === CommandParameterEnum.setVolume) { throw new Error('Not Implemented'); }
+        if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
+        // if(command === CommandParameterEnum...) { throw new Error('Not Implemented'); }
         
         throw new Error('Command does not exist');
     }
