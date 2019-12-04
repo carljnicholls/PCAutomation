@@ -29,7 +29,7 @@ export class SetVolumeCommandRunner implements ICommandRunner {
             }
             
             await this.volumeControl.set(Number.parseInt(args[0]) / 100);
-0
+
             return new CommandResult();
             // return new CommandResultDto(false, true, [ "warn" ]);
             // return new CommandResultDto(false, true);
