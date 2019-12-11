@@ -13,6 +13,8 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
     constructor(private readonly logger: ILoggerService) {    
     }
 
+    private readonly doesNotExistError = 'Command does not exist';
+
     /**
      * Returns a specific `ICommandRunner` implementation for the given `commandType` param 
      * compared to a `CommandParameterEnum` value or throws an error if it doesn't exist
@@ -27,6 +29,7 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
         // if(command === CommandParameterEnum...) { throw new Error('Not Implemented'); }
         
-        throw new Error('Command does not exist');
+        this.logger.error(this.doesNotExistError, commandType);
+        throw new Error(this.doesNotExistError);
     }
 }
