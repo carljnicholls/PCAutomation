@@ -1,13 +1,14 @@
 import { ILoggerService } from "../src/interfaces/core/i-logger-service";
 
 /**
- * Provides Ilogger tests
+ * Provides ILogger tests
  */
 export class LoggerTestHelper {
     
     /**
      * Checks the number of calls for the given `ILoggerService` for each 
      * `..calls` parameter count
+     * requires jest.mock('.../logger/logger-service');
      * @param loggerService The mocked logger instance
      * @param debugCalls The number `debug` of calls expected 
      * @param infoCalls The number `info` of calls expected 

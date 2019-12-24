@@ -3,12 +3,16 @@ import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto
 import { ILoggerService } from '../../../../interfaces/core/i-logger-service';
 import { IVolumeControl } from '../../../../interfaces/command-runners/commands/I-volume-control';
 import { VolumeControl } from './volume-control';
-import { isNumber, isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This implementation of `ICommandRunner` should set the current volume value of speaker devices
  */
 export class SetVolumeCommandRunner implements ICommandRunner {
+    private readonly className = 'SetVolumeCommandRunner';
+    private readonly noArgsProvided = "No Args Provided";
+    private readonly volumeValueError = "Volume value is not a number";
+
     private readonly volumeControl: IVolumeControl; 
 
     constructor(private readonly logger: ILoggerService) {
@@ -19,16 +23,21 @@ export class SetVolumeCommandRunner implements ICommandRunner {
      * Sets the speaker volume on Windows, Mac or Linux 
      */
     public async Run(args: string[]): Promise<CommandResult> {
-        this.logger.debug("SetVolumeCommandRunner.Run()", args);
+        this.logger.debug(`${this.className}.Run()`, args);
 
         try {
             if (isNullOrUndefined(args) || args.length === 0) {
-                throw("Set volume value missing");
-            } else if(isNumber(args[0])) {
-                throw("Volume value is not a number");
+                this.logger.error(this.noArgsProvided);
+                throw(this.noArgsProvided);
+            } 
+
+            let value = this.tryParseNumber(args[0]);
+            if(isNullOrUndefined(value) || !Number.isInteger(value)) {
+                this.logger.error(this.volumeValueError);
+                throw(this.volumeValueError);
             }
             
-            await this.volumeControl.set(Number.parseInt(args[0]) / 100);
+            await this.volumeControl.set(value / 100);
 
             return new CommandResult();
             // return new CommandResultDto(false, true, [ "warn" ]);
@@ -37,6 +46,16 @@ export class SetVolumeCommandRunner implements ICommandRunner {
         } catch (error) {
             var ex = JSON.stringify(error);
             return new CommandResult(true, false, ex);
+        }
+    }
+
+    private tryParseNumber(value: string): number | undefined {
+        try {
+            return Number.parseInt(value, 10);
+    
+        } catch(ex) {
+            this.logger.warn(`${this.className} Error parsing input`, value);
+            return undefined;
         }
     }
 }
