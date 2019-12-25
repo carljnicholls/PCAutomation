@@ -22,13 +22,13 @@ export class LoggerTestHelper {
         warnCalls: number = 0, 
         errorCalls: number = 0
     ): void {
-        expect(loggerService.debug)
+        expect(loggerService.debug, 'loggerService.debug threw')
             .toBeCalledTimes(debugCalls);
-        expect(loggerService.info)
+        expect(loggerService.info, 'loggerService.info threw')
             .toBeCalledTimes(infoCalls);
-        expect(loggerService.warn)
+        expect(loggerService.warn, 'loggerService.warn threw')
             .toBeCalledTimes(warnCalls);
-        expect(loggerService.error)
+        expect(loggerService.error, 'loggerService.error threw')
             .toBeCalledTimes(errorCalls);
     }
 }

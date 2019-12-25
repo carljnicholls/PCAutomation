@@ -29,12 +29,14 @@
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
         "@types/jest": "^24.0.23",
+        "@types/jest-expect-message": "^1.0.1",
         "@types/lock-system": "^2.0.0",
         "@types/moment": "^2.13.0",
         "@types/node": "^12.12.14",
         "@types/winston": "^2.4.4",
         "jest": "^24.9.0",
         "jest-each": "^24.9.0",
+        "jest-expect-message": "^1.0.2",
         "ts-jest": "^24.2.0",
         "typescript": "^3.7.2"
     }

@@ -192,4 +192,12 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+
+  
+  // Add custom test failure messages 
+  // via `jest-expect-message` npm package 
+  // aka expect(case, message) which isn't currently 
+  // supported natively in Jest
+  "setupTestFrameworkScriptFile": "jest-expect-message"
 };
