@@ -1,7 +1,7 @@
 {
     "name": "win10automation",
     "version": "0.0.1",
-    "description": "Listens to pushbullet maessages and runs autonation tasks",
+    "description": "Listens to pushbullet messages and runs automation tasks",
     "main": "index.js",
     "scripts": {
         "run-param-lock": "tsc -b && node .\\build\\src\\main.js lock",
@@ -21,23 +21,27 @@
         "dotenv": "^8.2.0",
         "lock-system": "^2.0.0",
         "moment": "^2.24.0",
+        "node-fetch": "^2.6.0",
         "pushbullet": "^2.4.0",
         "tslib": "^1.10.0",
         "vol": "^3.0.0",
-        "winston": "^3.2.1"
+        "winston": "^3.2.1",
+        "ws": "^7.2.1"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
-        "@types/jest": "^24.0.23",
+        "@types/jest": "^24.0.25",
         "@types/jest-expect-message": "^1.0.1",
         "@types/lock-system": "^2.0.0",
         "@types/moment": "^2.13.0",
-        "@types/node": "^12.12.14",
+        "@types/node": "^13.1.1",
+        "@types/node-fetch": "^2.5.4",
         "@types/winston": "^2.4.4",
+        "@types/ws": "^6.0.4",
         "jest": "^24.9.0",
         "jest-each": "^24.9.0",
         "jest-expect-message": "^1.0.2",
         "ts-jest": "^24.2.0",
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.4"
     }
 }
