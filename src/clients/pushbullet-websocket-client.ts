@@ -1,11 +1,12 @@
 import WebSocket = require('ws');
 
 import { PushbulletMessageResponse } from '../data-transfer/dtos/pushbullet-message-response.dto';
-import { ILoggerService } from '../interfaces/core/i-logger-service';
-import { isNullOrUndefined, isNull } from 'util';
+import { ILoggerService } from '../interfaces/services/core/i-logger-service';
+import { isNullOrUndefined } from 'util';
 import { PushbulletClient as PushbulletHttpClient } from './pushbullet-http-client';
+import { IPushbulletWebsocketClient } from '../interfaces/clients/i-pushbullet-websocket-client';
 
-export class PushbulletWebsocketClient {
+export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     private readonly className: string = 'PushbulletWebsocketClient';
     private readonly invalidApiKeyMessage: string = 'Pushbullet api key cannot be null, undefined or empty';
     private readonly websocketAddress = 'wss://stream.pushbullet.com/websocket/';

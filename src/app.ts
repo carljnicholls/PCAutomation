@@ -1,7 +1,7 @@
 import { DotenvConfigOutput } from 'dotenv/types';
-import { ICommandRunnerFactory } from "./interfaces/command-runners/i-command-runner-factory";
 import { CommandResult } from './data-transfer/dtos/command-result.dto';
-import { ILoggerService } from './interfaces/core/i-logger-service';
+import { ILoggerService } from './interfaces/services/core/i-logger-service';
+import { ICommandRunnerFactory } from './interfaces/services/command-runners/i-command-runner-factory';
 
 /**
  * Asynchronous Starting Point for Application

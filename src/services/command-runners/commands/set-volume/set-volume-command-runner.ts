@@ -1,9 +1,9 @@
-import { ICommandRunner } from "../../../../interfaces/command-runners/commands/i-command-runner";
 import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto';
-import { ILoggerService } from '../../../../interfaces/core/i-logger-service';
-import { IVolumeControl } from '../../../../interfaces/command-runners/commands/I-volume-control';
+import { ILoggerService } from '../../../../interfaces/services/core/i-logger-service';
 import { VolumeControl } from './volume-control';
 import { isNullOrUndefined } from 'util';
+import { ICommandRunner } from '../../../../interfaces/services/command-runners/commands/i-command-runner';
+import { IVolumeControl } from '../../../../interfaces/services/command-runners/commands/I-volume-control';
 
 /**
  * This implementation of `ICommandRunner` should set the current volume value of speaker devices

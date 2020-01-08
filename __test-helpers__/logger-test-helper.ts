@@ -1,4 +1,4 @@
-import { ILoggerService } from "../src/interfaces/core/i-logger-service";
+import { ILoggerService } from "../src/interfaces/services/core/i-logger-service";
 
 /**
  * Provides ILogger tests

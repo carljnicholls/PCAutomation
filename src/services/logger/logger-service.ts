@@ -3,7 +3,7 @@ import { TransformableInfo } from 'logform';
 import { createLogger, format, Logger, LoggerOptions, loggers, transports } from 'winston';
 import * as Transport from 'winston-transport';
 import { FileTransportOptions } from 'winston/lib/winston/transports';
-import { ILoggerService } from "../../interfaces/core/i-logger-service";
+import { ILoggerService } from "../../interfaces/services/core/i-logger-service";
 
 export class LoggerService implements ILoggerService {
     private readonly logger: Logger;

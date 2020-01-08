@@ -1,9 +1,9 @@
-import { ICommandRunnerFactory } from "../../interfaces/command-runners/i-command-runner-factory";
-import { ICommandRunner } from "../../interfaces/command-runners/commands/i-command-runner";
 import { LockCommandRunner } from "./commands/lock-command/lock-command-runner";
 import { CommandParameterEnum } from '../../data-transfer/enums/command-parameter.enum';
-import { ILoggerService } from '../../interfaces/core/i-logger-service';
+import { ILoggerService } from '../../interfaces/services/core/i-logger-service';
 import { SetVolumeCommandRunner } from './commands/set-volume/set-volume-command-runner';
+import { ICommandRunnerFactory } from '../../interfaces/services/command-runners/i-command-runner-factory';
+import { ICommandRunner } from '../../interfaces/services/command-runners/commands/i-command-runner';
 
 /**
  * A factory that provides a `ICommandRunner` implementations

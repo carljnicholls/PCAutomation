@@ -1,5 +1,5 @@
 import * as vol from "vol";
-import { IVolumeControl } from '../../../../interfaces/command-runners/commands/I-volume-control';
+import { IVolumeControl } from '../../../../interfaces/services/command-runners/commands/I-volume-control';
 
 export class VolumeControl implements IVolumeControl {
     public async get(): Promise<number> {

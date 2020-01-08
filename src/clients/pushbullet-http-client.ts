@@ -1,10 +1,11 @@
-import { ILoggerService } from '../interfaces/core/i-logger-service';
+import { ILoggerService } from '../interfaces/services/core/i-logger-service';
 import fetch from 'node-fetch';
 import { PushbulletPush } from '../data-transfer/dtos/clients/pushbullet-push.dto';
 import { PushbulletGetPushesResponse } from '../data-transfer/dtos/clients/pushbullet-get-pushes-response.dto';
 import { isNullOrUndefined } from 'util';
+import { IPushbulletHttpClient } from '../interfaces/clients/i-pushbullet-http-client';
 
-export class PushbulletClient {
+export class PushbulletClient implements IPushbulletHttpClient  {
     private readonly className: string = 'PushbulletClient';
     private readonly invalidApiKeyMessage: string = 'Pushbullet api key cannot be null, undefined or empty'
     private readonly listPushesUrl: string = 'https://api.pushbullet.com/v2/pushes';
@@ -35,7 +36,6 @@ export class PushbulletClient {
         this.logger.info(`${this.className}.getPushes`);
         const options = {
             headers: {
-                // 'Access-Token': 'o.sv37ZRXTh6jVacBdSYf0fcVVg6lYTKEk',
                 'Access-Token': this.apiKey,
                 'Content-Type': 'application/json'
             }
