@@ -1,7 +1,7 @@
 jest.mock('lock-system');
 
 import lockSystem from 'lock-system';
-import { ILoggerService } from '../../../../../src/interfaces/core/i-logger-service';
+import { ILoggerService } from '../../../../../src/interfaces/services/core/i-logger-service';
 import { LockCommandRunner } from '../../../../../src/services/command-runners/commands/lock-command/lock-command-runner';
 import { LoggerService } from '../../../../../src/services/logger/logger-service';
 

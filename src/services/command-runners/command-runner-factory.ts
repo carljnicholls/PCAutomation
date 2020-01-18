@@ -4,6 +4,7 @@ import { ILoggerService } from '../../interfaces/services/core/i-logger-service'
 import { SetVolumeCommandRunner } from './commands/set-volume/set-volume-command-runner';
 import { ICommandRunnerFactory } from '../../interfaces/services/command-runners/i-command-runner-factory';
 import { ICommandRunner } from '../../interfaces/services/command-runners/commands/i-command-runner';
+import { PushbulletServerRunner } from './commands/pushbullet-server/pushbullet-server-command-runner';
 
 /**
  * A factory that provides a `ICommandRunner` implementations
@@ -25,7 +26,10 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         this.logger.debug("CommandRunnerFactory.Get()", commandType);
         const command = commandType.toLowerCase();
 
-        if(command === CommandParameterEnum.lock) { return new LockCommandRunner(this.logger); }
+        if(command === CommandParameterEnum.server
+            || command === CommandParameterEnum.pushbullet) { return new PushbulletServerRunner(this.logger); }
+        if(command === CommandParameterEnum.lock
+            || command === CommandParameterEnum.lockDevice) { return new LockCommandRunner(this.logger); }
         if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
         // if(command === CommandParameterEnum...) { throw new Error('Not Implemented'); }
         

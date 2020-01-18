@@ -34,10 +34,21 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
 
         this.websocket = new WebSocket(`${this.websocketAddress}${this.apiKey}`);
         this.pushbulletClient = new PushbulletHttpClient(this.apiKey, logger);
+    }
+
+    /**
+     * Starts listening for messages
+     */
+    public async connect(): Promise<void> {
+        this.logger.debug(`${this.className}.connect`);
 
         this.websocket.on('message', async (data: WebSocket.Data) => await this.onMessage(data));
 
-        // TODO: Additional event handlers 
+        /** Add Additional event listeners */
+    }
+
+    public async disconnect(): Promise<void> {
+        this.websocket.close();
     }
 
     /**
@@ -47,9 +58,9 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
      * @param data Data received from websocket connection
      */
     private async onMessage(data: WebSocket.Data): Promise<void> {
-        this.logger.info(`${this.className}.on.message`, data);
+        this.logger.debug(`${this.className}.on.message`, data);
         const response = JSON.parse(data.toString()) as PushbulletMessageResponse;
-        this.logger.debug(`${this.className}.on.message`, response);
+        this.logger.info(`${this.className}.on.message`, response);
 
         // `nop` message every 30 seconds
         if(isNullOrUndefined(response) || response.type === 'nop') {

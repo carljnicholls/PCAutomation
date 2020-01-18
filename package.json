@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "run-param-lock": "tsc -b && node .\\build\\src\\main.js lock",
+        "run-param-server": "tsc -b && node .\\build\\src\\main.js server",
         "test": "jest"
     },
     "repository": {

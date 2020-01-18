@@ -1,8 +1,8 @@
 jest.mock('../../../../../src/services/logger/logger-service.ts');
 
-import { ICommandRunner } from "../../../../../src/interfaces/command-runners/commands/i-command-runner";
+import { ICommandRunner } from "../../../../../src/interfaces/services/command-runners/commands/i-command-runner";
 import { SetVolumeCommandRunner } from "../../../../../src/services/command-runners/commands/set-volume/set-volume-command-runner";
-import { ILoggerService } from '../../../../../src/interfaces/core/i-logger-service';
+import { ILoggerService } from '../../../../../src/interfaces/services/core/i-logger-service';
 import { LoggerService } from '../../../../../src/services/logger/logger-service';
 
 import { LoggerTestHelper } from "../../../../../__test-helpers__/logger-test-helper";
