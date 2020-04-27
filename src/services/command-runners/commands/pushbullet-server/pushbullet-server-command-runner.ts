@@ -3,15 +3,15 @@ import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto
 import { ILoggerService } from '../../../../interfaces/services/core/i-logger-service';
 import { IPushbulletWebsocketClient } from '../../../../interfaces/clients/i-pushbullet-websocket-client';
 import { PushbulletWebsocketClient } from '../../../../clients/pushbullet-websocket-client';
-import { config } from "dotenv";
 import { isNullOrUndefined } from 'util';
+import { ICommandRunnerFactory } from '../../../../interfaces/services/command-runners/i-command-runner-factory';
 
 export class PushbulletServerRunner implements ICommandRunner {
     private server: IPushbulletWebsocketClient | undefined;
 
-    constructor(private readonly logger: ILoggerService) {
-        // this.server = {};        
-    }
+    constructor(
+        private readonly commandFactory: ICommandRunnerFactory,
+        private readonly logger: ILoggerService) { }
 
     /**
      * Creates a Websocket connection to Pushbullet using `PUSHBULLET_API_KEY` 
@@ -29,7 +29,7 @@ export class PushbulletServerRunner implements ICommandRunner {
             }
 
             if(isNullOrUndefined(this.server)){ 
-                this.server = new PushbulletWebsocketClient(apiKey, this.logger);
+                this.server = new PushbulletWebsocketClient(apiKey, this.commandFactory, this.logger);
             }
 
             await this.server.connect();

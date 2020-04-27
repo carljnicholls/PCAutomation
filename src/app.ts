@@ -28,7 +28,7 @@ export class App {
     public async Run(args: string[]): Promise<void> { 
         try{
             this.logger.debug('App.Run() - start', args);
-            const commandRunner = this.commandRunnerFactory.Get(args[0]); 
+            const commandRunner = this.commandRunnerFactory.get(args[0]); 
             const commandResult = await commandRunner.Run(args.slice(1, args.length));
             
             // this.config.parsed    
@@ -46,7 +46,7 @@ export class App {
      * Handles logging of result from ICommandRunner.Run()
      * @param commandResult Result returned from ICommandRunner.Run()
      * @param args Arguments passed to the application
-     * @throws When `CommandResult` is not successful, unsuccesful or hasWarnings 
+     * @throws When `CommandResult` is not successful, unsuccessful or hasWarnings 
      */
     private handleResult(commandResult: CommandResult, args: string[]): void {
         if(!commandResult.isError && !commandResult.isWarning) {

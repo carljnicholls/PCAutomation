@@ -5,5 +5,9 @@ export interface IPushbulletWebsocketClient {
      * will run execute commands.
      */
     connect(): Promise<void>;
+
+    /**
+     * Closes the WebSocket connection to Pushbullet
+     */
     disconnect(): Promise<void>;
 }
