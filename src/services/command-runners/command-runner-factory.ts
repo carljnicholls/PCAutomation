@@ -62,7 +62,7 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         var i = this.ignoredCommands.indexOf(command); 
 
         if(i !== -1) { 
-            console.warn(`${this.ignoredCommandAlreadyExistError}, not adding`);
+            this.logger.warn(`${this.ignoredCommandAlreadyExistError}, not adding`);
             return;
         }
         
@@ -83,7 +83,7 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         var i = this.ignoredCommands.indexOf(command); 
 
         if(i === -1) { 
-            console.warn(`${this.doesNotExistError} in ignored commands, not removing`);
+            this.logger.warn(`${this.doesNotExistError} in ignored commands, not removing`);
             return;
         }
         
@@ -99,9 +99,9 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
      * @param command 
      */
     private isCommandIgnored(command: string) {
-        this.ignoredCommands.forEach((el) => {
-            if (el == command) {
-                console.error(`${this.isCommandIgnoredName}() ${this.commandIgnoredError}`);
+        this.ignoredCommands.forEach((cmd) => {
+            if (cmd == command) {
+                this.logger.error(`${this.isCommandIgnoredName}() ${this.commandIgnoredError}`);
                 throw new Error(this.commandIgnoredError);
             }
         });
