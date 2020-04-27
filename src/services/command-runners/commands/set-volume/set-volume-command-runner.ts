@@ -4,6 +4,7 @@ import { VolumeControl } from './volume-control';
 import { isNullOrUndefined } from 'util';
 import { ICommandRunner } from '../../../../interfaces/services/command-runners/commands/i-command-runner';
 import { IVolumeControl } from '../../../../interfaces/services/command-runners/commands/I-volume-control';
+import { wordsToNumbers } from 'words-to-numbers';
 
 /**
  * This implementation of `ICommandRunner` should set the current volume value of speaker devices
@@ -22,7 +23,7 @@ export class SetVolumeCommandRunner implements ICommandRunner {
     /**
      * Sets the speaker volume on Windows, Mac or Linux 
      */
-    public async Run(args: string[]): Promise<CommandResult> {
+    public async run(args: string[]): Promise<CommandResult> {
         this.logger.debug(`${this.className}.Run()`, args);
 
         try {
@@ -51,7 +52,12 @@ export class SetVolumeCommandRunner implements ICommandRunner {
 
     private tryParseNumber(value: string): number | undefined {
         try {
-            return Number.parseInt(value, 10);
+            const x = wordsToNumbers(value); 
+            if(x == undefined) throw Error(`Can not turn ${value} to number`);
+
+            if(typeof x === 'number') return x;
+
+            return Number.parseInt(x, 10);
     
         } catch(ex) {
             this.logger.warn(`${this.className} Error parsing input`, value);

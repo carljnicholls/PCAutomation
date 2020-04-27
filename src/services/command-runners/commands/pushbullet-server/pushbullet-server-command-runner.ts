@@ -19,8 +19,8 @@ export class PushbulletServerRunner implements ICommandRunner {
      * commands upon specific requests 
      * @param args unused
      */
-    public async Run(args?: string[] | undefined): Promise<CommandResult> {
-        this.logger.debug("ServerCommandRunner.Run()");
+    public async run(args?: string[] | undefined): Promise<CommandResult> {
+        this.logger.debug("ServerCommandRunner.Run()", args);
         try {
             const apiKey = process.env.PUSHBULLET_API_KEY;
 

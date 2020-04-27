@@ -6,6 +6,9 @@ import { LockCommandRunner } from '../../../../src/services/command-runners/comm
 import { SetVolumeCommandRunner } from '../../../../src/services/command-runners/commands/set-volume/set-volume-command-runner';
 import { LoggerTestHelper } from '../../../../__test-helpers__/logger-test-helper';
 import { CommandParameterEnum } from '../../../../src/data-transfer/enums/command-parameter.enum';
+import { PushbulletServerRunner } from '../../../../src/services/command-runners/commands/pushbullet-server/pushbullet-server-command-runner';
+import { MediaPlayRunner } from '../../../../src/services/command-runners/commands/keyboard/media/play/media-play-command-runner';
+import { MediaPauseRunner } from '../../../../src/services/command-runners/commands/keyboard/media/pause/media-pause-command-runner';
 
 const loggerTestHelper = new LoggerTestHelper();
 
@@ -42,7 +45,7 @@ describe('command runner factory', () => {
                     .toThrowError();
             });
 
-        it.each(['lock', 'Lock'])
+        it.each(['lock', 'Lock', 'LOck', 'lockdevice', 'lockDevice'])
             ('should return a `LockCommandRunner` when param equals `lock` or `Lock`', (cmd: string) => {
                 expect(service.get(cmd))
                     .toBeInstanceOf(LockCommandRunner);
@@ -50,10 +53,34 @@ describe('command runner factory', () => {
                 loggerTestHelper.checkLoggerCalls(logger, 1, 0, 0, 0);
             });
         
-        it.each(['setvolume', 'setVolume', 'SetVolume'])
+        it.each(['volume', 'Volume', 'VolumE'])
             ('should return a `SetVolumeCommandRunner` when param equals `setvolume`', (cmd: string) => {
                 expect(service.get(cmd))
                     .toBeInstanceOf(SetVolumeCommandRunner);
+                
+                loggerTestHelper.checkLoggerCalls(logger, 1, 0, 0, 0);
+            });
+
+        it.each(['server', 'Server', 'SeRveR', 'pushbullet', 'Pushbullet', 'PUSHbullet'])
+            ('should return a `PushbulletServerRunner` when param equals `server` or `pushbullet` ', (cmd: string) => {
+                expect(service.get(cmd))
+                    .toBeInstanceOf(PushbulletServerRunner);
+                
+                loggerTestHelper.checkLoggerCalls(logger, 1, 0, 0, 0);
+            });
+
+        it.each(['play', 'Play', 'PlaY'])
+            ('should return a `MediaPlayRunner` when param equals `play`', (cmd: string) => {
+                expect(service.get(cmd))
+                    .toBeInstanceOf(MediaPlayRunner);
+                
+                loggerTestHelper.checkLoggerCalls(logger, 1, 0, 0, 0);
+            });
+
+        it.each(['pause', 'Pause', 'PAuSE'])
+            ('should return a `MediaPauseRunner` when param equals `pause`', (cmd: string) => {
+                expect(service.get(cmd))
+                    .toBeInstanceOf(MediaPauseRunner);
                 
                 loggerTestHelper.checkLoggerCalls(logger, 1, 0, 0, 0);
             });

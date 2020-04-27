@@ -3,5 +3,7 @@ export enum CommandParameterEnum {
     server = 'server',
     lock = 'lock', 
     lockDevice = 'lockdevice',
-    setVolume = 'setvolume'
+    setVolume = 'volume', 
+    mediaPlay = 'play',
+    mediaPause = 'pause'
 }

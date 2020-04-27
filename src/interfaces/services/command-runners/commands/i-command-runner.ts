@@ -8,5 +8,5 @@ export interface ICommandRunner {
     /**
      * Runs a command or process that performs specific task on the host
      */
-    Run(args?: string[]): Promise<CommandResult>;
+    run(args?: string[]): Promise<CommandResult>;
 }

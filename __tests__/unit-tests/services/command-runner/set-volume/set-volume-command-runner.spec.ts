@@ -26,7 +26,7 @@ xdescribe('set-volume-command-runner', () => {
     });
 
     it('should return error result if no args', async () => {
-        const result = await service.Run()
+        const result = await service.run()
                 
         expect(result.isError)
             .toBeTruthy();
@@ -35,7 +35,7 @@ xdescribe('set-volume-command-runner', () => {
     });
 
     it('should return error result if first arg not number', async () => {
-        const result = await service.Run(['beans'])
+        const result = await service.run(['beans'])
                 
         expect(result.isError)
             .toBeTruthy();
@@ -44,7 +44,7 @@ xdescribe('set-volume-command-runner', () => {
     });
 
     it('should return success result if given number', async () => {
-        const result = await service.Run(['2'])
+        const result = await service.run(['2'])
                 
         expect(result.isError)
             .toBeFalsy();

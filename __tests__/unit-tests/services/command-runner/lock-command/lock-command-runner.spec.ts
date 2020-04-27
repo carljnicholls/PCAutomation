@@ -18,14 +18,14 @@ describe('lock command runner', () => {
 
     describe('run', () => {
         it('should call lockSystem()', () => {
-            service.Run();
+            service.run();
 
             expect(lockSystem)
                 .toBeCalledTimes(1);
         });
 
         it('should call lockSystem()', async () => {
-            expect(() => service.Run())
+            expect(() => service.run())
                 .not
                 .toThrowError();
         });

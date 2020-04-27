@@ -29,9 +29,8 @@ export class App {
         try{
             this.logger.debug('App.Run() - start', args);
             const commandRunner = this.commandRunnerFactory.get(args[0]); 
-            const commandResult = await commandRunner.Run(args.slice(1, args.length));
+            const commandResult = await commandRunner.run(args.slice(1, args.length));
             
-            // this.config.parsed    
             this.handleResult(commandResult, args);
         
         } catch(error) {

@@ -5,6 +5,8 @@ import { SetVolumeCommandRunner } from './commands/set-volume/set-volume-command
 import { ICommandRunnerFactory } from '../../interfaces/services/command-runners/i-command-runner-factory';
 import { ICommandRunner } from '../../interfaces/services/command-runners/commands/i-command-runner';
 import { PushbulletServerRunner } from './commands/pushbullet-server/pushbullet-server-command-runner';
+import { MediaPlayRunner } from './commands/keyboard/media/play/media-play-command-runner';
+import { MediaPauseRunner } from './commands/keyboard/media/pause/media-pause-command-runner';
 
 /**
  * A factory that provides a `ICommandRunner` implementations
@@ -31,7 +33,7 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
      * @throws When `CommandParameterEnum` value does not exist 
      */
     public get(commandType: string): ICommandRunner {
-        this.logger.debug(`${this.getName}()`, [ commandType, { ignoredCommands: this.ignoredCommands } ]);
+        this.logger.debug(`${this.getName}`, [ commandType, { ignoredCommands: this.ignoredCommands } ]);
         const command = commandType.toLowerCase();
 
         // throws if command is ignored.. 
@@ -43,6 +45,8 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         if(command === CommandParameterEnum.lock
             || command === CommandParameterEnum.lockDevice) { return new LockCommandRunner(this.logger); }
         if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
+        if(command === CommandParameterEnum.mediaPlay) { return new MediaPlayRunner(this.logger); }
+        if(command === CommandParameterEnum.mediaPause) { return new MediaPauseRunner(this.logger); }
         
         this.logger.error(this.doesNotExistError, commandType);
         throw new Error(this.doesNotExistError);

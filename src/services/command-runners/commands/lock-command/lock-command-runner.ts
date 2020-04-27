@@ -16,7 +16,7 @@ export class LockCommandRunner implements ICommandRunner {
     /**
      * Locks the current Windows, Mac or Linux user session
      */
-    public async Run(): Promise<CommandResult> {
+    public async run(): Promise<CommandResult> {
         this.logger.debug("LockCommandRunner.Run()");
 
         try {

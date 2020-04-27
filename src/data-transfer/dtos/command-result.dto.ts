@@ -1,14 +1,19 @@
 /**
  * Contains the success state of a `ICommandRunner.Run()`result.
- * If constructed without params it is successful. If constructed with 
- * messages but warning false it will set warnings true. If it is 
- * constructed with success and warning as false a default message is added.
  */
 export class CommandResult {
     public readonly isError: boolean;
     public readonly isWarning: boolean;
     public readonly messages: string[] = [];
 
+    /**
+     * When constructed without params it defaults to successful. If constructed with 
+     * messages but warning false it will set warning true. If it is 
+     * constructed with isError true and warning as false a default message is added.
+     * @param isError default: false
+     * @param isWarning default: false
+     * @param messages default: []
+     */
     constructor(
         isError: boolean = false,
         isWarning: boolean = false,

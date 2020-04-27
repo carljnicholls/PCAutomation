@@ -117,7 +117,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
 
         const currentPushArgs = args.split(' ');
         const commandRunner = this.commandRunnerFactory.get(currentPushArgs[0]);
-        const commandResult = await commandRunner.Run(currentPushArgs.slice(1, args.length));
+        const commandResult = await commandRunner.run(currentPushArgs.slice(1, args.length));
         
         return commandResult;
     }
