@@ -1,4 +1,4 @@
-import WebSocket = require('ws');
+import WebSocket from "ws";
 
 import { PushbulletMessageResponse } from '../data-transfer/dtos/pushbullet-message-response.dto';
 import { ILoggerService } from '../interfaces/services/core/i-logger-service';
@@ -47,20 +47,22 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     }
 
     /**
-     * Starts listening for messages
+     * Starts `open`, `message`, `close` and `error` listeners 
      */
     public async connect(): Promise<void> {
         this.logger.debug(`${this.className}.connect`);
 
+        this.websocket.on('open', () => this.logger.debug(`${this.className}.connect.ws. open`)); 
         this.websocket.on('message', async (data: WebSocket.Data) => await this.onMessage(data));
-
-        /** Add Additional event listeners */
+        this.websocket.on('error', async (error: Error) => { await this.onError(error)});
+        this.websocket.on('close', async () => { await this.onClose(); });
     }
 
     /**
      * Closes the WebSocket connection to Pushbullet
      */
     public async disconnect(): Promise<void> {
+        this.logger.debug(`${this.className}.disconnect`);
         this.websocket.close();
     }
 
@@ -71,40 +73,52 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
      * @param data Data received from websocket connection
      */
     private async onMessage(data: WebSocket.Data): Promise<void> {
-        this.logger.debug(`${this.onMessageName}`, data);
-        const response = JSON.parse(data.toString()) as PushbulletMessageResponse;
-        this.logger.info(`${this.onMessageName}`, response);
+        try {
+            this.logger.debug(`${this.onMessageName}`, data);
+            const response = JSON.parse(data.toString()) as PushbulletMessageResponse;
+            this.logger.info(`${this.onMessageName}`, response);
 
-        // `nop` message every 30 seconds
-        if(isNullOrUndefined(response) || PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.nop) {
-            this.logger.debug(`${this.onMessageName}.nop`);
-            return;
-        }
-
-        // when something is pushed or received 
-        if(PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.tickle) {
-            this.logger.info(`${this.onMessageName}.tickle`, response.subtype);
-
-            if(!isNullOrUndefined(response.subtype) && PushbulletResponseTypeEnum[response.subtype] === PushbulletResponseTypeEnum.push) {
-                this.logger.info(`${this.onMessageName}.tickle.push`);
-
-                const commandResult = await this.handlePushMessage();
-    
-                if(commandResult.isError) {
-                    throw new Error(commandResult.messages[0]);
-                }
-
-            } else {
-                this.logger.warn(`${this.onMessageName}.tickle - received no subtype`);
+            // `nop` message every 30 seconds
+            if(isNullOrUndefined(response) || PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.nop) {
+                this.logger.debug(`${this.onMessageName}.nop`);
+                return;
             }
-            
-            return;
+
+            // when something is pushed or received 
+            if(PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.tickle) {
+                this.logger.info(`${this.onMessageName}.tickle`, response.subtype);
+                await this.handleTickleResponse(response);
+            }
+
         }
+        catch(err) {
+            this.logger.error(`${this.onMessageName}.error`, err);
+            // no reason to rethrow as its not going to be caught anywhere 
+        }
+    }
+
+    /**
+     * Error message from `WS` event handler
+     */
+    private async onError(error: Error): Promise<void> {
+        this.logger.error(`${this.className}.onError`, error);
+    }
+
+    /**
+     * Close message from `WS` event handler
+     * Disconnects the websocket server
+     */
+    private async onClose(): Promise<void> {
+        this.logger.debug(`${this.className}.onClose`);
+        this.disconnect();
     }
 
     /**
      * Gets the most recent push response and uses it to get an `ICommandRunner` implementation
      * dependant on the first string argument 
+     * @throws If it receives no body from pushbullet request
+     * @throws If command does not exist
+     * @throws If command.run throws 
      */
     private async handlePushMessage(): Promise<CommandResult> {
         const pushes = await this.pushbulletClient.getPushes();
@@ -120,5 +134,35 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
         const commandResult = await commandRunner.run(currentPushArgs.slice(1, args.length));
         
         return commandResult;
+    }
+
+        /**
+     * Gets the most recent push from Pushbullet API decides which command it is, 
+     * runs it and handles the command result. 
+     * @param response Tickle message from websocket server
+     * @throws when command result `isError` or `isWarning`
+     */
+    private async handleTickleResponse(response: PushbulletMessageResponse) {
+        if (!isNullOrUndefined(response.subtype) && PushbulletResponseTypeEnum[response.subtype] === PushbulletResponseTypeEnum.push) {
+            this.logger.info(`${this.onMessageName}.tickle.push`);
+            const commandResult = await this.handlePushMessage();
+            if (commandResult.isError) {
+                throw new Error(this.getResultMessage(commandResult));
+            }
+            if (commandResult.isWarning) {
+                throw new Error(this.getResultMessage(commandResult));
+            }
+            this.logger.info(`${this.onMessage}.tickle.push.success`, commandResult);
+        }
+        else {
+            this.logger.warn(`${this.onMessageName}.tickle - subtype is undefined or not expected type`);
+        }
+    }
+
+    /**
+     * Returns the first element in message array if it exists
+     */
+    private getResultMessage(commandResult: CommandResult): string | undefined {
+        return commandResult.messages[0];
     }
 }
