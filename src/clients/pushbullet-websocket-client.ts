@@ -14,6 +14,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     private readonly className: string = 'PushbulletWebsocketClient';
     private readonly onMessageName: string = `${this.className}.on.message`;
     private readonly handlePushMessageName: string = `${this.className}.handlePushMessage`;
+    private readonly handleTickleResponseName: string = `${this.className}.handleTickleResponse`;
     private readonly invalidApiKeyMessage: string = 'Pushbullet api key cannot be null, undefined or empty';
     private readonly websocketAddress = 'wss://stream.pushbullet.com/websocket/';
 
@@ -144,7 +145,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
      */
     private async handleTickleResponse(response: PushbulletMessageResponse) {
         if (!isNullOrUndefined(response.subtype) && PushbulletResponseTypeEnum[response.subtype] === PushbulletResponseTypeEnum.push) {
-            this.logger.info(`${this.onMessageName}.tickle.push`);
+            this.logger.info(`${this.handleTickleResponseName}.tickle.push`);
             const commandResult = await this.handlePushMessage();
             if (commandResult.isError) {
                 throw new Error(this.getResultMessage(commandResult));
@@ -152,10 +153,10 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
             if (commandResult.isWarning) {
                 throw new Error(this.getResultMessage(commandResult));
             }
-            this.logger.info(`${this.onMessage}.tickle.push.success`, commandResult);
+            this.logger.info(`${this.handleTickleResponseName}.tickle.push.success`, commandResult);
         }
         else {
-            this.logger.warn(`${this.onMessageName}.tickle - subtype is undefined or not expected type`);
+            this.logger.warn(`${this.handleTickleResponseName}.tickle - subtype is undefined or not expected type`);
         }
     }
 
