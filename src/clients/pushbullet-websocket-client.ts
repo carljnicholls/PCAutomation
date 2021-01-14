@@ -2,7 +2,6 @@ import WebSocket from "ws";
 
 import { PushbulletMessageResponse } from '../data-transfer/dtos/pushbullet-message-response.dto';
 import { ILoggerService } from '../interfaces/services/core/i-logger-service';
-import { isNullOrUndefined } from 'util';
 import { PushbulletClient as PushbulletHttpClient } from './pushbullet-http-client';
 import { IPushbulletWebsocketClient } from '../interfaces/clients/i-pushbullet-websocket-client';
 import { ICommandRunnerFactory } from '../interfaces/services/command-runners/i-command-runner-factory';
@@ -35,7 +34,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     ) {
         logger.info(`${this.className}.ctor`);
 
-        if(isNullOrUndefined(apiKey) || apiKey.trim().length == 0) {
+        if(apiKey == undefined || apiKey.trim().length == 0) {
             this.logger.error(`${this.className}.ctor ${this.invalidApiKeyMessage}`)
             throw new Error(this.invalidApiKeyMessage)
         }
@@ -80,7 +79,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
             this.logger.info(`${this.onMessageName}`, response);
 
             // `nop` message every 30 seconds
-            if(isNullOrUndefined(response) || PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.nop) {
+            if(response == undefined || PushbulletResponseTypeEnum[response.type] === PushbulletResponseTypeEnum.nop) {
                 this.logger.debug(`${this.onMessageName}.nop`);
                 return;
             }
@@ -126,7 +125,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
         this.logger.info(`${this.handlePushMessageName}.pushes`, pushes);
 
         const args = pushes[0].body;
-        if (isNullOrUndefined(args) || args.trim().length === 0) {
+        if (args == undefined || args.trim().length === 0) {
             throw new Error(`No Arguments provided`);
         }
 
@@ -144,7 +143,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
      * @throws when command result `isError` or `isWarning`
      */
     private async handleTickleResponse(response: PushbulletMessageResponse) {
-        if (!isNullOrUndefined(response.subtype) && PushbulletResponseTypeEnum[response.subtype] === PushbulletResponseTypeEnum.push) {
+        if (response.subtype != undefined && PushbulletResponseTypeEnum[response.subtype] === PushbulletResponseTypeEnum.push) {
             this.logger.info(`${this.handleTickleResponseName}.tickle.push`);
             const commandResult = await this.handlePushMessage();
             if (commandResult.isError) {

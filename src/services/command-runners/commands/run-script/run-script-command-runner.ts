@@ -2,7 +2,6 @@ import { ICommandRunner } from '../../../../interfaces/services/command-runners/
 import { ILoggerService } from '../../../../interfaces/services/core/i-logger-service';
 import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto';
 import { readdir } from 'fs-extra';
-import { isNullOrUndefined } from 'util';
 import { CommandErrorMessages } from '../../../../data-transfer/enums/command-error-messages.enum';
 import path from 'path';
 import execa from "execa";
@@ -25,7 +24,7 @@ export class RunScriptCommandRunner implements ICommandRunner {
         let error: Error | undefined = undefined;
 
         try {
-            if (isNullOrUndefined(args) || args.length === 0) {
+            if (args == undefined || args.length === 0) {
                 this.logger.error(`${this.runName} - ${CommandErrorMessages.NoArgs}`);
                 throw(CommandErrorMessages.NoArgs);
             } 
@@ -40,11 +39,11 @@ export class RunScriptCommandRunner implements ICommandRunner {
             const scriptFile = files.find(filename => filename.trim().includes(args[0])); 
             this.logger.debug(`${this.runName}`, scriptFile);
 
-            if(isNullOrUndefined(scriptFile)) {
+            if(scriptFile) {
                 throw new Error(CommandErrorMessages.ScriptDoesNotExist);
             }
 
-            const scriptPath = path.join(scriptDir, scriptFile);
+            // const scriptPath = path.join([scriptDir, scriptFile]);
             // const executionResult = await execa(scriptPath);
 
             // if(this.executionFailed(executionResult)) {
@@ -73,6 +72,6 @@ export class RunScriptCommandRunner implements ICommandRunner {
     
 
     private executionFailed(executionResult: execa.ExecaReturnValue<string>): boolean {
-        return executionResult.failed || (!isNullOrUndefined(executionResult.stderr) && executionResult.stderr.length > 0);
+        return executionResult.failed || (executionResult.stderr != undefined && executionResult.stderr.length > 0);
     }
 }

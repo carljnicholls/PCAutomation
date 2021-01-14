@@ -1,7 +1,6 @@
 import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto';
 import { ILoggerService } from '../../../../interfaces/services/core/i-logger-service';
 import { VolumeControl } from './volume-control';
-import { isNullOrUndefined } from 'util';
 import { ICommandRunner } from '../../../../interfaces/services/command-runners/commands/i-command-runner';
 import { IVolumeControl } from '../../../../interfaces/services/command-runners/commands/I-volume-control';
 import { wordsToNumbers } from 'words-to-numbers';
@@ -25,13 +24,13 @@ export class SetVolumeCommandRunner implements ICommandRunner {
         this.logger.debug(`${this.className}.Run()`, args);
 
         try {
-            if (isNullOrUndefined(args) || args.length === 0) {
+            if (args == undefined || args.length === 0) {
                 this.logger.error(CommandErrorMessages.NoArgs);
                 throw(CommandErrorMessages.NoArgs);
             } 
 
             let value = this.tryParseNumber(args[0]);
-            if(isNullOrUndefined(value) || !Number.isInteger(value)) {
+            if (value == undefined || !Number.isInteger(value)) {
                 this.logger.error(CommandErrorMessages.VolumeNaN);
                 throw(CommandErrorMessages.VolumeNaN);
             }

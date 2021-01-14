@@ -3,7 +3,6 @@ import { CommandResult } from '../../../../data-transfer/dtos/command-result.dto
 import { ILoggerService } from '../../../../interfaces/services/core/i-logger-service';
 import { IPushbulletWebsocketClient } from '../../../../interfaces/clients/i-pushbullet-websocket-client';
 import { PushbulletWebsocketClient } from '../../../../clients/pushbullet-websocket-client';
-import { isNullOrUndefined } from 'util';
 import { ICommandRunnerFactory } from '../../../../interfaces/services/command-runners/i-command-runner-factory';
 
 export class PushbulletServerRunner implements ICommandRunner {
@@ -24,11 +23,11 @@ export class PushbulletServerRunner implements ICommandRunner {
         try {
             const apiKey = process.env.PUSHBULLET_API_KEY;
 
-            if(isNullOrUndefined(apiKey) || apiKey.trim().length === 0) {
+            if(apiKey == undefined || apiKey.trim().length === 0) {
                 throw new Error(`PUSHBULLET_API_KEY must be declared in .env file in app root`)
             }
 
-            if(isNullOrUndefined(this.server)){ 
+            if(this.server == undefined){ 
                 this.server = new PushbulletWebsocketClient(apiKey, this.commandFactory, this.logger);
             }
 
@@ -39,7 +38,7 @@ export class PushbulletServerRunner implements ICommandRunner {
         } catch (error) {
             this.logger.error(`ServerCommandRunner.Run()`, error);
 
-            if(!isNullOrUndefined(this.server)){
+            if(this.server != undefined){
                 this.server.disconnect();
                 this.server = undefined;
             }

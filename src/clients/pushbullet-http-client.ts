@@ -2,7 +2,6 @@ import { ILoggerService } from '../interfaces/services/core/i-logger-service';
 import fetch from 'node-fetch';
 import { PushbulletPush } from '../data-transfer/dtos/clients/pushbullet-push.dto';
 import { PushbulletGetPushesResponse } from '../data-transfer/dtos/clients/pushbullet-get-pushes-response.dto';
-import { isNullOrUndefined } from 'util';
 import { IPushbulletHttpClient } from '../interfaces/clients/i-pushbullet-http-client';
 
 export class PushbulletClient implements IPushbulletHttpClient  {
@@ -21,7 +20,7 @@ export class PushbulletClient implements IPushbulletHttpClient  {
         private readonly logger: ILoggerService) {
             logger.info(`${this.className}.ctor`);
 
-            if(isNullOrUndefined(apiKey) || apiKey.trim().length == 0) {
+            if(apiKey == undefined || apiKey.trim().length == 0) {
                 this.logger.error(`${this.className}.ctor ${this.invalidApiKeyMessage}`)
                 throw new Error(this.invalidApiKeyMessage)
             }
