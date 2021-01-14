@@ -5,5 +5,8 @@ export enum CommandParameterEnum {
     lockDevice = 'lockdevice',
     setVolume = 'volume', 
     mediaPlay = 'play',
-    mediaPause = 'pause'
+    mediaPause = 'pause', 
+    run = 'run', 
+    command = 'command', 
+    script = 'script'
 }

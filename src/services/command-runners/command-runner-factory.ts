@@ -7,6 +7,7 @@ import { ICommandRunner } from '../../interfaces/services/command-runners/comman
 import { PushbulletServerRunner } from './commands/pushbullet-server/pushbullet-server-command-runner';
 import { MediaPlayRunner } from './commands/keyboard/media/play/media-play-command-runner';
 import { MediaPauseRunner } from './commands/keyboard/media/pause/media-pause-command-runner';
+import { RunScriptCommandRunner } from './commands/run-script/run-script-command-runner';
 
 /**
  * A factory that provides a `ICommandRunner` implementations
@@ -42,11 +43,22 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
         // Return command runner implementation
         if(command === CommandParameterEnum.server
             || command === CommandParameterEnum.pushbullet) { return new PushbulletServerRunner(this, this.logger); }
-        if(command === CommandParameterEnum.lock
+        
+            if(command === CommandParameterEnum.lock
             || command === CommandParameterEnum.lockDevice) { return new LockCommandRunner(this.logger); }
-        if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
+        
+            if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
+        
         if(command === CommandParameterEnum.mediaPlay) { return new MediaPlayRunner(this.logger); }
         if(command === CommandParameterEnum.mediaPause) { return new MediaPauseRunner(this.logger); }
+        
+        if(    command === CommandParameterEnum.command 
+            || command === CommandParameterEnum.run
+            || command === CommandParameterEnum.script) { 
+                return new RunScriptCommandRunner(this.logger); 
+        }
+        // if(command === CommandParameterEnum.run) { return new RunScriptCommandRunner(this.logger); }
+        // if(command === CommandParameterEnum.script) { return new RunScriptCommandRunner(this.logger); }
         
         this.logger.error(this.doesNotExistError, commandType);
         throw new Error(this.doesNotExistError);
