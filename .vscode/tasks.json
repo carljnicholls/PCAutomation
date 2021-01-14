@@ -8,7 +8,8 @@
 				"$tsc"
 			],
 			"group": "build",
-			"label": "tsc: build - tsconfig.json"
+			"label": "tsc: build - tsconfig.json", 
+			"dependsOn": ["cp: scripts"]
 		},
 		{
 			"type": "typescript",
@@ -18,7 +19,13 @@
 				"$tsc-watch"
 			],
 			"group": "build",
-			"label": "tsc: watch - tsconfig.json"
+			"label": "tsc: watch - tsconfig.json", 
+			"dependsOn": ["cp: scripts"]
+		}, 
+		{
+			"type": "npm", 
+			"label": "cp: scripts", 
+			"script": "copy-scripts-to-build"
 		}
 	]
 }

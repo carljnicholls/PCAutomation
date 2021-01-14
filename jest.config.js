@@ -154,7 +154,7 @@ module.exports = {
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  // testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: null,
@@ -199,5 +199,6 @@ module.exports = {
   // via `jest-expect-message` npm package 
   // aka expect(case, message) which isn't currently 
   // supported natively in Jest
-  "setupTestFrameworkScriptFile": "jest-expect-message"
+  // "setupTestFrameworkScriptFile": "jest-expect-message",
+  "setupFilesAfterEnv": [ "jest-expect-message" ]
 };
