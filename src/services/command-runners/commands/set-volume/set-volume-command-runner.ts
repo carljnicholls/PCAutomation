@@ -5,15 +5,13 @@ import { isNullOrUndefined } from 'util';
 import { ICommandRunner } from '../../../../interfaces/services/command-runners/commands/i-command-runner';
 import { IVolumeControl } from '../../../../interfaces/services/command-runners/commands/I-volume-control';
 import { wordsToNumbers } from 'words-to-numbers';
+import { CommandErrorMessages } from '../../../../data-transfer/enums/command-error-messages.enum';
 
 /**
  * This implementation of `ICommandRunner` should set the current volume value of speaker devices
  */
 export class SetVolumeCommandRunner implements ICommandRunner {
     private readonly className = 'SetVolumeCommandRunner';
-    private readonly noArgsProvided = "No Args Provided";
-    private readonly volumeValueError = "Volume value is not a number";
-
     private readonly volumeControl: IVolumeControl; 
 
     constructor(private readonly logger: ILoggerService) {
@@ -28,14 +26,14 @@ export class SetVolumeCommandRunner implements ICommandRunner {
 
         try {
             if (isNullOrUndefined(args) || args.length === 0) {
-                this.logger.error(this.noArgsProvided);
-                throw(this.noArgsProvided);
+                this.logger.error(CommandErrorMessages.NoArgs);
+                throw(CommandErrorMessages.NoArgs);
             } 
 
             let value = this.tryParseNumber(args[0]);
             if(isNullOrUndefined(value) || !Number.isInteger(value)) {
-                this.logger.error(this.volumeValueError);
-                throw(this.volumeValueError);
+                this.logger.error(CommandErrorMessages.VolumeNaN);
+                throw(CommandErrorMessages.VolumeNaN);
             }
             
             await this.volumeControl.set(value / 100);
