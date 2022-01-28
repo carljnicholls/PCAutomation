@@ -4,12 +4,15 @@ import { ILoggerService } from '../../../../interfaces/services/core/i-logger-se
 import { IPushbulletWebsocketClient } from '../../../../interfaces/clients/i-pushbullet-websocket-client';
 import { PushbulletWebsocketClient } from '../../../../clients/pushbullet-websocket-client';
 import { ICommandRunnerFactory } from '../../../../interfaces/services/command-runners/i-command-runner-factory';
+import { StateManager } from '../../../state/state-manager.service';
+import { CommandParameterEnum } from '../../../../data-transfer/enums/command-parameter.enum';
 
 export class PushbulletServerRunner implements ICommandRunner {
     private server: IPushbulletWebsocketClient | undefined;
 
     constructor(
         private readonly commandFactory: ICommandRunnerFactory,
+        private readonly state: StateManager,
         private readonly logger: ILoggerService) { }
 
     /**
@@ -29,6 +32,9 @@ export class PushbulletServerRunner implements ICommandRunner {
 
             if(this.server == undefined){ 
                 this.server = new PushbulletWebsocketClient(apiKey, this.commandFactory, this.logger);
+
+                // Ignore `server` and `pushbullet` commands. 
+                this.state.addCommandsToIgnore([CommandParameterEnum.pushbullet, CommandParameterEnum.server]);
             }
 
             await this.server.connect();

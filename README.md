@@ -1,6 +1,10 @@
 # Win 10 Automation 
 
-This Console Application takes string params to automate tasks. The first command should be the task with any addition values following.
+This Application takes string params to automate tasks. It can also be run in 'server' mode listening for commands from [Pushbullet](https://www.pushbullet.com/). The first command should be the task with any addition values following. Implemented tasks are: 
+- play/pause media
+- lock desktop (win/ubuntu)
+- volume control 
+
 
 ## Run
 

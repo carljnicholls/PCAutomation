@@ -8,6 +8,7 @@ import { ICommandRunnerFactory } from '../interfaces/services/command-runners/i-
 import { CommandParameterEnum } from '../data-transfer/enums/command-parameter.enum';
 import { PushbulletResponseTypeEnum } from '../data-transfer/enums/pushbullet-response-type.enum';
 import { CommandResult } from '../data-transfer/dtos/command-result.dto';
+import { StateManager } from "../services/state/state-manager.service";
 
 export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     private readonly className: string = 'PushbulletWebsocketClient';
@@ -16,6 +17,7 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
     private readonly handleTickleResponseName: string = `${this.className}.handleTickleResponse`;
     private readonly invalidApiKeyMessage: string = 'Pushbullet api key cannot be null, undefined or empty';
     private readonly websocketAddress = 'wss://stream.pushbullet.com/websocket/';
+    private readonly unknownErrorMessage = 'Unknown Error Occurred';
 
     private readonly websocket: WebSocket;
     private readonly pushbulletClient: PushbulletHttpClient
@@ -41,9 +43,6 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
 
         this.websocket = new WebSocket(`${this.websocketAddress}${this.apiKey}`);
         this.pushbulletClient = new PushbulletHttpClient(this.apiKey, logger);
-
-        // Ignored `server` and `pushbullet` commands. 
-        commandRunnerFactory.addCommandsToIgnore([CommandParameterEnum.pushbullet, CommandParameterEnum.server]);
     }
 
     /**
@@ -124,16 +123,26 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
         const pushes = await this.pushbulletClient.getPushes();
         this.logger.info(`${this.handlePushMessageName}.pushes`, pushes);
 
-        const args = pushes[0].body;
-        if (args == undefined || args.trim().length === 0) {
-            throw new Error(`No Arguments provided`);
-        }
+        try {
+            const args = pushes[0].body;
+            if (args == undefined || args.trim().length === 0) {
+                throw new Error(`No Arguments provided`);
+            }
 
-        const currentPushArgs = args.split(' ');
-        const commandRunner = this.commandRunnerFactory.get(currentPushArgs[0]);
-        const commandResult = await commandRunner.run(currentPushArgs.slice(1, args.length));
+            const currentPushArgs = args.split(' ');
+            const commandRunner = this.commandRunnerFactory.get(currentPushArgs[0]);
+            const commandResult = await commandRunner.run(currentPushArgs.slice(1, args.length));
+
+            return commandResult;
+
+        } catch (error) {
+            return {
+                isError: true, 
+                isWarning: false,
+                messages: [ error?.message || this.unknownErrorMessage ]
+            } as CommandResult;
+        }
         
-        return commandResult;
     }
 
         /**
