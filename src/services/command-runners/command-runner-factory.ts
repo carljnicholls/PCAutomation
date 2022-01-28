@@ -33,33 +33,25 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
      * @param commandType command string variable
      * @throws When `CommandParameterEnum` value does not exist 
      */
-    public get(commandType: string): ICommandRunner {
+    public get(commandType: string): ICommandRunner | undefined {
         this.logger.debug(`${this.getName}`, [ commandType, { ignoredCommands: this.ignoredCommands } ]);
         const command = commandType.toLowerCase();
 
-        // throws if command is ignored.. 
-        this.isCommandIgnored(command);
+        // Do not return implementation when command ignored
+        if(this.isCommandIgnored(command))
+            return undefined;
 
         // Return command runner implementation
-        if(command === CommandParameterEnum.server
-            || command === CommandParameterEnum.pushbullet) { return new PushbulletServerRunner(this, this.logger); }
-        
-            if(command === CommandParameterEnum.lock
-            || command === CommandParameterEnum.lockDevice) { return new LockCommandRunner(this.logger); }
-        
-            if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
-        
+        if(this.isPushBulletServerCommend(command)) { return new PushbulletServerRunner(this, this.logger); }
+        if(this.isDeviceLockCommand(command)) { return new LockCommandRunner(this.logger); }
+        if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
         if(command === CommandParameterEnum.mediaPlay) { return new MediaPlayRunner(this.logger); }
         if(command === CommandParameterEnum.mediaPause) { return new MediaPauseRunner(this.logger); }
-        
-        if(    command === CommandParameterEnum.command 
-            || command === CommandParameterEnum.run
-            || command === CommandParameterEnum.script) { 
-                return new RunScriptCommandRunner(this.logger); 
+        if(this.isRunCustomCommand(command)) { 
+            return new RunScriptCommandRunner(this.logger); 
         }
-        // if(command === CommandParameterEnum.run) { return new RunScriptCommandRunner(this.logger); }
-        // if(command === CommandParameterEnum.script) { return new RunScriptCommandRunner(this.logger); }
-        
+
+        // Handle unexpected command 
         this.logger.error(this.doesNotExistError, commandType);
         throw new Error(this.doesNotExistError);
     }
@@ -114,12 +106,32 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
      * Throws error if command is on `ignoredCommands` property
      * @param command 
      */
-    private isCommandIgnored(command: string) {
-        this.ignoredCommands.forEach((cmd) => {
-            if (cmd == command) {
-                this.logger.error(`${this.isCommandIgnoredName}() ${this.commandIgnoredError}`);
-                throw new Error(this.commandIgnoredError);
+    private isCommandIgnored(command: string): boolean {
+        for(let i; i < this.ignoredCommands.length; i++) {
+            if (this.ignoredCommands[i] == command) {
+                this.logger.warn(`${this.isCommandIgnoredName}() ${this.commandIgnoredError}`);
+                return true;
             }
-        });
+        }
+
+        return false;
+    }
+
+    private isPushBulletServerCommend(command: string) {
+        return command === CommandParameterEnum.server
+            || command === CommandParameterEnum.pushbullet;
+    }
+
+    private isRunCustomCommand(command: string) {
+        return command === CommandParameterEnum.command
+            || command === CommandParameterEnum.run
+            || command === CommandParameterEnum.script;
+    }
+
+    private isDeviceLockCommand(command: string) {
+        return command === CommandParameterEnum.lock
+            || command === CommandParameterEnum.lockDevice;
     }
 }
+
+

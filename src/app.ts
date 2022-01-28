@@ -2,6 +2,7 @@ import { DotenvConfigOutput } from 'dotenv/types';
 import { CommandResult } from './data-transfer/dtos/command-result.dto';
 import { ILoggerService } from './interfaces/services/core/i-logger-service';
 import { ICommandRunnerFactory } from './interfaces/services/command-runners/i-command-runner-factory';
+import { CommandParameterEnum } from './data-transfer/enums/command-parameter.enum';
 
 /**
  * Asynchronous Starting Point for Application
@@ -29,6 +30,9 @@ export class App {
         try{
             this.logger.debug('App.Run() - start', args);
             const commandRunner = this.commandRunnerFactory.get(args[0]); 
+
+            if(commandRunner == undefined) return;
+
             const commandResult = await commandRunner.run(args.slice(1, args.length));
             
             this.handleResult(commandResult, args);
