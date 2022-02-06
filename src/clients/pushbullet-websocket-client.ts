@@ -172,6 +172,6 @@ export class PushbulletWebsocketClient implements IPushbulletWebsocketClient {
      * Returns the first element in message array if it exists
      */
     private getResultMessage(commandResult: CommandResult): string | undefined {
-        return commandResult.messages[0];
+        return commandResult?.messages[0];
     }
 }

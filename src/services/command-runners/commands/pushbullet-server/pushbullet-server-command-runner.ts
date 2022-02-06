@@ -7,7 +7,7 @@ import { ICommandRunnerFactory } from '../../../../interfaces/services/command-r
 import { StateManager } from '../../../state/state-manager.service';
 import { CommandParameterEnum } from '../../../../data-transfer/enums/command-parameter.enum';
 
-export class PushbulletServerRunner implements ICommandRunner {
+export class PushbulletServerCommandRunner implements ICommandRunner {
     private server: IPushbulletWebsocketClient | undefined;
 
     constructor(
@@ -39,7 +39,7 @@ export class PushbulletServerRunner implements ICommandRunner {
 
             await this.server.connect();
 
-            return new Promise(() => new CommandResult(false));
+            return new CommandResult(false);
 
         } catch (error) {
             this.logger.error(`ServerCommandRunner.Run()`, error);

@@ -4,7 +4,7 @@ import { ILoggerService } from '../../interfaces/services/core/i-logger-service'
 import { SetVolumeCommandRunner } from './commands/set-volume/set-volume-command-runner';
 import { ICommandRunnerFactory } from '../../interfaces/services/command-runners/i-command-runner-factory';
 import { ICommandRunner } from '../../interfaces/services/command-runners/commands/i-command-runner';
-import { PushbulletServerRunner } from './commands/pushbullet-server/pushbullet-server-command-runner';
+import { PushbulletServerCommandRunner } from './commands/pushbullet-server/pushbullet-server-command-runner';
 import { MediaPlayRunner } from './commands/keyboard/media/play/media-play-command-runner';
 import { MediaPauseRunner } from './commands/keyboard/media/pause/media-pause-command-runner';
 import { RunScriptCommandRunner } from './commands/run-script/run-script-command-runner';
@@ -46,7 +46,7 @@ export class CommandRunnerFactory implements ICommandRunnerFactory {
             throw new Error(this.commandIgnoredError);
 
         // Return command runner implementation
-        if(this.isPushBulletServerCommend(command)) { return new PushbulletServerRunner(this, this.state, this.logger); }
+        if(this.isPushBulletServerCommend(command)) { return new PushbulletServerCommandRunner(this, this.state, this.logger); }
         if(this.isDeviceLockCommand(command)) { return new LockCommandRunner(this.logger); }
         if(command === CommandParameterEnum.setVolume) { return new SetVolumeCommandRunner(this.logger); }
         if(command === CommandParameterEnum.mediaPlay) { return new MediaPlayRunner(this.logger); }
